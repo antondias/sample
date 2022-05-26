@@ -42,7 +42,7 @@ class Blender:
 		tokenhandler.TokenHandler.test()
 		print("token = " + self.token);	
 		print("starting to process blender...")
-		if(start == end):
+		if(self.startFrame == self.endFrame):
 			print("--------------------------------------------")
 			print("------ This process has been already completed------")
 			print("--------------------------------------------")
