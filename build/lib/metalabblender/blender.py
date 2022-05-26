@@ -1,4 +1,4 @@
-from metalabblender import blender,tokenhandler,helper,ldpreload
+from metalabblender import blender,tokenhandler,ldpreload
 import subprocess
 
 class Blender:
@@ -26,7 +26,7 @@ class Blender:
 		self.endFrame = endFrame
 		self.renderer = renderer
 		self.optixEnabled = optixEnabled
-		gpu_setup()
+		Blender.gpu_setup()
 		ldpreload.preload()
 
 	def gpu_setup():
