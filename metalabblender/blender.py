@@ -26,6 +26,7 @@ class Blender:
 		self.endFrame = endFrame
 		self.renderer = renderer
 		self.optixEnabled = optixEnabled
+		gpu_setup()
 		ldpreload.preload()
 
 	def gpu_setup():
@@ -39,8 +40,7 @@ class Blender:
 
 	def render(self):
 		tokenhandler.TokenHandler.test()
-		print("token = " + self.token);
-		start_thread()	
+		print("token = " + self.token);	
 		print("starting to process blender...")
 		if(start == end):
 			print("--------------------------------------------")
