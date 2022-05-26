@@ -26,7 +26,7 @@ class Blender:
 		self.endFrame = endFrame
 		self.renderer = renderer
 		self.optixEnabled = optixEnabled
-		gpu_setup()
+		Blender.gpu_setup()
 		ldpreload.preload()
 
 	def gpu_setup():
