@@ -1,4 +1,4 @@
-from metalabblender import blender,tokenhandler,helper,ldpreload
+from metalabblender import blender,tokenhandler,ldpreload
 import subprocess
 
 class Blender:
