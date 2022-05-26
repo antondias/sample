@@ -2,9 +2,10 @@ Metadata-Version: 2.1
 Name: metalabblender
 Version: 0.1.0
 Summary: Metalab blender renderer
-Home-page: UNKNOWN
+Home-page: https://github.com/antondias/sample.git
 Author: Treinetic
 License: MIT
+Download-URL: https://github.com/antondias/sample/archive/refs/tags/v1.tar.gz
 Platform: UNKNOWN
 
 UNKNOWN
