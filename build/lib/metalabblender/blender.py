@@ -59,8 +59,8 @@ class Blender:
 		sys.__stdout__	
 
 	def setup(self):
-		if (self.logEnable == False):
-			Blender.blockPrint()
+		#if (self.logEnable == False):
+			#Blender.blockPrint()
 		Blender.gpu_setup()
 		ldpreload.preload()
 		setupblender.setup(self.blenderVersion)
