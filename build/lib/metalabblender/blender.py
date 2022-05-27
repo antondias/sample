@@ -53,7 +53,7 @@ class Blender:
 		ldpreload.preload()
 		setupblender.setup(self.blenderVersion)
 		setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
-		Blender.set_renderer()
+		Blender.set_renderer(self)
 		print("Setup completed")
 
 
