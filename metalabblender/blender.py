@@ -44,7 +44,7 @@ class Blender:
 			print("OptiX disabled because of unsupported GPU")
 			self.optixEnabled = False
 
-	def set_renderer():
+	def set_renderer(self):
 		if self.optixEnabled:
 			self.renderer = "OPTIX"		
 
