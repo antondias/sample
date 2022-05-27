@@ -47,12 +47,11 @@ class Blender:
 			self.renderer = "OPTIX"		
 
 	def setup(self):
-		blenderRenderer = Blender()
-		blenderRenderer.gpu_setup()
+		Blender.gpu_setup()
 		ldpreload.preload()
 		setupblender.setup(self.blenderVersion)
 		setupblender.enable_rendering(self.gpuEnabled, self. cpuEnabled)
-		blenderRenderer.set_renderer()
+		Blender.set_renderer()
 		print("Setup completed")
 
 
