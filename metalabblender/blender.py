@@ -46,7 +46,7 @@ class Blender:
 		if optix_enabled:
 			self.renderer = "OPTIX"		
 
-	def setup():
+	def setup(self):
 		blenderRenderer = Blender()
 		blenderRenderer.gpu_setup()
 		ldpreload.preload()
