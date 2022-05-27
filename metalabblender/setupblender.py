@@ -14,7 +14,7 @@ blender_url_dict = {'2.79b'   : "https://ftp.nluug.nl/pub/graphics/blender/relea
                     '3.1.2'   : "https://ftp.nluug.nl/pub/graphics/blender/release/Blender3.1/blender-3.1.2-linux-x64.tar.xz"}
 
 def setup(blenderVersion):
-    blender_url = blender_url_dict[blender_version]
+    blender_url = blender_url_dict[blenderVersion]
     base_url = os.path.basename(blender_url)
 
     try:
