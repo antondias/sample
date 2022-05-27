@@ -50,4 +50,4 @@ def enable_rendering(gpu_enabled, cpu_enabled):
     "    else:\n"+\
     "        device.use = "+str(cpu_enabled)+"\n"
     with open('setgpu.py', 'w') as f:
-    f.write(data)    
+        f.write(data)    
