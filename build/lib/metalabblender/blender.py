@@ -77,7 +77,7 @@ class Blender:
 		if (self.noAudio):
 			audio = "-noaudio"
 		if (self.animation):
-			if start_frame == end_frame:	
+			if self.startFrame == self.endFrame:	
 				args = ["sudo", blender_binary, 
 						"-b", self.blenderFilePath,
 						"-P", "setgpu.py", 
