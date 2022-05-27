@@ -43,7 +43,7 @@ class Blender:
 			self.optixEnabled = False
 
 	def set_renderer():
-		if optix_enabled:
+		if self.optixEnabled:
 			self.renderer = "OPTIX"		
 
 	def setup(self):
