@@ -1,5 +1,6 @@
 from metalabblender import blender,tokenhandler,ldpreload,setupblender
 import subprocess
+import sys,os
 
 class Blender:
 
@@ -63,7 +64,7 @@ class Blender:
 		setupblender.setup(self.blenderVersion)
 		setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
 		Blender.set_renderer(self)
-		if (!self.logEnable):
+		if (self.logEnable == False):
 			Blender.blockPrint()
 		print("Setup completed")
 
