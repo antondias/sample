@@ -17,9 +17,14 @@ def setup(blenderVersion):
     blender_url = blender_url_dict[blender_version]
     base_url = os.path.basename(blender_url)
 
-    subprocess.run(["mkdir", blenderVersion],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    subprocess.run(["wget", "-nc", blender_url],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    subprocess.run(["tar", "-xfk", base_url, "-C", './'+blenderVersion, '--strip-components=1'],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        subprocess.run(["mkdir", blenderVersion],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.run(["wget", "-nc", blender_url],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.run(["tar", "-xfk", base_url, "-C", './'+blenderVersion, '--strip-components=1'],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print("Blender installed..." + blenderVersion)
+    except subprocess.CalledProcessError as e:
+        print("Something went wrong..... Blender library installtion failed.....")
+        print(e.output)
 
 
 def enable_rendering(gpu_enabled, cpu_enabled):

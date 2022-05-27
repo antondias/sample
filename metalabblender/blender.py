@@ -30,6 +30,8 @@ class Blender:
 		self.renderer = renderer
 		self.optixEnabled = optixEnabled
 		self.gpuEnabled = gpuEnabled
+		self.cpuEnabled = cpuEnabled
+		self.animation = animation
 
 
 	def gpu_setup():
@@ -52,11 +54,11 @@ class Blender:
 		setupblender.setup(self.blenderVersion)
 		setupblender.enable_rendering(self.gpuEnabled, self. cpuEnabled)
 		blenderRenderer.set_renderer()
+		print("Setup completed")
 
 
 	def render(self):
 		tokenhandler.TokenHandler.test()
-		print("token = " + self.token);	
 		print("starting to process blender...")
 		blender_binary = './'+self.blenderVersion+"/blender"	
 		if (self.animation):
@@ -96,7 +98,6 @@ class Blender:
 			process = subprocess.Popen(args, stdout=subprocess.PIPE)
 			print(process.stdout.read())
 			print("Blender Completed...............................................")
-			empty_temp_folder()
 		except subprocess.CalledProcessError as e:
 			print("Something went wrong..... Blender file did not executed.....")
 			print(e.output)
