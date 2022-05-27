@@ -38,7 +38,6 @@ class Blender:
 		gpu = subprocess.run(["nvidia-smi", "--query-gpu=gpu_name", "--format=csv,noheader"],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		gpu = gpu.stdout
 		print("Current GPU: " + gpu)
-
 		if gpu == "Tesla K80" and self.optixEnabled:
 			print("OptiX disabled because of unsupported GPU")
 			self.optixEnabled = False
