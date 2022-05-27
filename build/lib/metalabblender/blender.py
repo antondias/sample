@@ -17,9 +17,10 @@ class Blender:
 	cpuEnabled = None
 	animation = None
 	noAudio = None
+	logEnable = None
 
 	def __init__(self, blenderFilePath, outputPath, blenderVersion, fileFormat, renderEngine, startFrame, endFrame, 
-				renderer, optixEnabled, gpuEnabled, cpuEnabled, animation, noAudio, token):
+				renderer, optixEnabled, gpuEnabled, cpuEnabled, animation, noAudio, logEnable, token):
 		self.token = token
 		self.blenderFilePath = blenderFilePath
 		self.outputPath = outputPath
@@ -34,6 +35,7 @@ class Blender:
 		self.cpuEnabled = cpuEnabled
 		self.animation = animation
 		self.noAudio = noAudio
+		self.logEnable = logEnable
 
 
 	def gpu_setup():
@@ -46,7 +48,14 @@ class Blender:
 
 	def set_renderer(self):
 		if self.optixEnabled:
-			self.renderer = "OPTIX"		
+			self.renderer = "OPTIX"
+
+	def blockPrint():
+		print("Blocking print")
+		sys.stdout = open(os.devnull, 'w')
+
+	def enablePrint():
+		sys.stdout = sys.__stdout__	
 
 	def setup(self):
 		Blender.gpu_setup()
@@ -54,6 +63,8 @@ class Blender:
 		setupblender.setup(self.blenderVersion)
 		setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
 		Blender.set_renderer(self)
+		if (!self.logEnable):
+			Blender.blockPrint()
 		print("Setup completed")
 
 
