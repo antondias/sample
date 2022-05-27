@@ -44,7 +44,7 @@ class Blender:
 
 	def set_renderer():
 		if optix_enabled:
-		self.renderer = "OPTIX"		
+			self.renderer = "OPTIX"		
 
 	def setup():
 		blenderRenderer = Blender()
