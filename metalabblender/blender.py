@@ -16,9 +16,10 @@ class Blender:
 	gpuEnabled = None
 	cpuEnabled = None
 	animation = None
+	noAudio = None
 
 	def __init__(self, blenderFilePath, outputPath, blenderVersion, fileFormat, renderEngine, startFrame, endFrame, 
-				renderer, optixEnabled, gpuEnabled, cpuEnabled, animation, token):
+				renderer, optixEnabled, gpuEnabled, cpuEnabled, animation, noAudio, token):
 		self.token = token
 		self.blenderFilePath = blenderFilePath
 		self.outputPath = outputPath
@@ -32,6 +33,7 @@ class Blender:
 		self.gpuEnabled = gpuEnabled
 		self.cpuEnabled = cpuEnabled
 		self.animation = animation
+		self.noAudio = noAudio
 
 
 	def gpu_setup():
@@ -50,7 +52,7 @@ class Blender:
 		Blender.gpu_setup()
 		ldpreload.preload()
 		setupblender.setup(self.blenderVersion)
-		setupblender.enable_rendering(self.gpuEnabled, self. cpuEnabled)
+		setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
 		Blender.set_renderer()
 		print("Setup completed")
 
@@ -58,13 +60,16 @@ class Blender:
 	def render(self):
 		tokenhandler.TokenHandler.test()
 		print("starting to process blender...")
-		blender_binary = './'+self.blenderVersion+"/blender"	
+		blender_binary = './'+self.blenderVersion+"/blender"
+		audio = ""
+		if (self.noAudio):
+			audio = "-noaudio"
 		if (self.animation):
 			if start_frame == end_frame:	
 				args = ["sudo", blender_binary, 
 						"-b", blender_file_path,
 						"-P", "setgpu.py", 
-						"-noaudio","-E", self.renderEngine,
+						audio,"-E", self.renderEngine,
 						"--log-level","1",
 						"-o", self.outputPath,
 						"-a", "--", "--cycles-device", self.renderer
@@ -73,7 +78,7 @@ class Blender:
 				args = ["sudo", blender_binary, 
 						"-b", blender_file_path,
 						"-P", "setgpu.py",
-						"-noaudio","-E", self.renderEngine,
+						audio,"-E", self.renderEngine,
 						"--log-level","1",
 						"-o", self.outputPath, 
 						"-s", str(self.startFrame),
@@ -84,7 +89,7 @@ class Blender:
 			args = ["sudo", blender_binary, 
 						"-b", blender_file_path,
 						"-P", "setgpu.py",
-						"-noaudio","-E", self.renderEngine,
+						audio,"-E", self.renderEngine,
 						"--log-level","1",
 						"-o", self.outputPath,
 						"-f", str(self.startFrame),
