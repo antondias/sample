@@ -67,7 +67,7 @@ class Blender:
 		if (self.animation):
 			if start_frame == end_frame:	
 				args = ["sudo", blender_binary, 
-						"-b", blender_file_path,
+						"-b", self.blenderFilePath,
 						"-P", "setgpu.py", 
 						audio,"-E", self.renderEngine,
 						"--log-level","1",
@@ -76,7 +76,7 @@ class Blender:
 					]
 			else:
 				args = ["sudo", blender_binary, 
-						"-b", blender_file_path,
+						"-b", self.blenderFilePath,
 						"-P", "setgpu.py",
 						audio,"-E", self.renderEngine,
 						"--log-level","1",
@@ -87,7 +87,7 @@ class Blender:
 					]
 		else:
 			args = ["sudo", blender_binary, 
-						"-b", blender_file_path,
+						"-b", self.blenderFilePath,
 						"-P", "setgpu.py",
 						audio,"-E", self.renderEngine,
 						"--log-level","1",
