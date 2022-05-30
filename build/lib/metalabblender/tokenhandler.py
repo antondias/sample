@@ -2,7 +2,7 @@ import jwt
 
 class TokenHandler:
 
-	secret = "JWT_SECRET"
+	secret = "GEwLxiNDTXYErljimTdf"
 
 	def decode_token(token):	
 			try:

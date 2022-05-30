@@ -1,4 +1,4 @@
-from metalabblender import blender,tokenhandler,ldpreload,setupblender
+from metalabblender import blender,tokenhandler,ldpreload,setupblender,datalog
 import subprocess
 import sys,os
 
@@ -17,11 +17,11 @@ class Blender:
 	gpuEnabled = None
 	cpuEnabled = None
 	animation = None
-	noAudio = None
+	audio = None
 	logEnable = None
 
 	def __init__(self, blenderFilePath, outputPath, blenderVersion, fileFormat, renderEngine, startFrame, endFrame, 
-				renderer, optixEnabled, gpuEnabled, cpuEnabled, animation, noAudio, logEnable, token):
+				renderer, optixEnabled, gpuEnabled, cpuEnabled, animation, audio, logEnable, token):
 		self.token = token
 		self.blenderFilePath = blenderFilePath
 		self.outputPath = outputPath
@@ -35,7 +35,7 @@ class Blender:
 		self.gpuEnabled = gpuEnabled
 		self.cpuEnabled = cpuEnabled
 		self.animation = animation
-		self.noAudio = noAudio
+		self.audio = audio
 		self.logEnable = logEnable
 
 
@@ -51,37 +51,26 @@ class Blender:
 		if self.optixEnabled:
 			self.renderer = "OPTIX"
 
-	def blockPrint():
-		print("Blocking print")
-		open(os.devnull, 'w')
-
-	def enablePrint():
-		sys.__stdout__	
-
 	def setup(self):
-		#if (self.logEnable == False):
-			#Blender.blockPrint()
+		tokenhandler.TokenHandler.decode_token(self.token)
+		Blender.set_renderer(self)	
 		Blender.gpu_setup()
 		ldpreload.preload()
 		setupblender.setup(self.blenderVersion)
 		setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
-		Blender.set_renderer(self)
 		print("Setup completed")
 
-
 	def render(self):
-		tokenhandler.TokenHandler.test()
 		print("starting to process blender...")
 		blender_binary = './'+self.blenderVersion+"/blender"
-		audio = ""
-		if (self.noAudio):
-			audio = "-noaudio"
+		audioAvailable = ""
+		if (self.audio == False):
+			audioAvailable = "-noaudio"
 		if (self.animation):
 			if self.startFrame == self.endFrame:	
 				args = ["sudo", blender_binary, 
 						"-b", self.blenderFilePath,
-						"-P", "setgpu.py", 
-						audio,"-E", self.renderEngine,
+						audioAvailable,"-E", self.renderEngine,
 						"--log-level","1",
 						"-o", self.outputPath,
 						"-a", self.fileFormat, "--", "--cycles-device", self.renderer
@@ -89,8 +78,7 @@ class Blender:
 			else:
 				args = ["sudo", blender_binary, 
 						"-b", self.blenderFilePath,
-						"-P", "setgpu.py",
-						audio,"-E", self.renderEngine,
+						audioAvailable,"-E", self.renderEngine,
 						"--log-level","1",
 						"-o", self.outputPath, 
 						"-s", str(self.startFrame),
@@ -100,8 +88,7 @@ class Blender:
 		else:
 			args = ["sudo", blender_binary, 
 						"-b", self.blenderFilePath,
-						"-P", "setgpu.py",
-						audio,"-E", self.renderEngine,
+						audioAvailable,"-E", self.renderEngine,
 						"--log-level","1",
 						"-o", self.outputPath,
 						"-f", str(self.startFrame),

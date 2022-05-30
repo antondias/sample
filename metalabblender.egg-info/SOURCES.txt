@@ -2,6 +2,7 @@ README.md
 setup.py
 metalabblender/__init__.py
 metalabblender/blender.py
+metalabblender/datalog.py
 metalabblender/ldpreload.py
 metalabblender/setupblender.py
 metalabblender/tokenhandler.py
