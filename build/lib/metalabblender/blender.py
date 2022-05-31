@@ -13,15 +13,12 @@ class Blender:
 	startFrame = None
 	endFrame = None
 	renderer = None
-	optixEnabled = None
-	gpuEnabled = None
-	cpuEnabled = None
 	animation = None
 	audio = None
 	logEnable = None
 
 	def __init__(self, blenderFilePath, outputPath, blenderVersion, fileFormat, renderEngine, startFrame, endFrame, 
-				renderer, optixEnabled, gpuEnabled, cpuEnabled, animation, audio, logEnable, token):
+				renderer, animation, audio, logEnable, token):
 		self.token = token
 		self.blenderFilePath = blenderFilePath
 		self.outputPath = outputPath
@@ -31,9 +28,6 @@ class Blender:
 		self.startFrame = startFrame
 		self.endFrame = endFrame
 		self.renderer = renderer
-		self.optixEnabled = optixEnabled
-		self.gpuEnabled = gpuEnabled
-		self.cpuEnabled = cpuEnabled
 		self.animation = animation
 		self.audio = audio
 		self.logEnable = logEnable
@@ -43,9 +37,6 @@ class Blender:
 		gpu = subprocess.run(["nvidia-smi", "--query-gpu=gpu_name", "--format=csv,noheader"],encoding="utf-8",stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		gpu = gpu.stdout
 		print("Current GPU: " + gpu)
-		if gpu == "Tesla K80" and self.optixEnabled:
-			print("OptiX disabled because of unsupported GPU")
-			self.optixEnabled = False
 
 	def set_renderer(self):
 		if self.optixEnabled:
@@ -53,11 +44,11 @@ class Blender:
 
 	def setup(self):
 		#tokenhandler.TokenHandler.decode_token(self.token)
-		Blender.set_renderer(self)	
+		#Blender.set_renderer(self)	
 		Blender.gpu_setup()
 		ldpreload.preload()
 		setupblender.setup(self.blenderVersion)
-		setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
+		#setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
 		print("Setup completed")
 
 	def render(self):
