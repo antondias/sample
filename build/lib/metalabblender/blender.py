@@ -52,7 +52,7 @@ class Blender:
 			self.renderer = "OPTIX"
 
 	def setup(self):
-		tokenhandler.TokenHandler.decode_token(self.token)
+		#tokenhandler.TokenHandler.decode_token(self.token)
 		Blender.set_renderer(self)	
 		Blender.gpu_setup()
 		ldpreload.preload()
