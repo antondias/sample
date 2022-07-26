@@ -3,7 +3,9 @@ setup.py
 metalabblender/__init__.py
 metalabblender/blender.py
 metalabblender/datalog.py
+metalabblender/filedownload.py
 metalabblender/ldpreload.py
+metalabblender/resources.py
 metalabblender/setupblender.py
 metalabblender/tokenhandler.py
 metalabblender.egg-info/PKG-INFO

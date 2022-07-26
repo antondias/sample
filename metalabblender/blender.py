@@ -1,4 +1,4 @@
-from metalabblender import blender,tokenhandler,ldpreload,setupblender,datalog
+from metalabblender import blender,tokenhandler,ldpreload,setupblender,datalog,filedownload,resources
 import subprocess
 import sys,os
 
@@ -6,8 +6,10 @@ class Blender:
 
 	token = None
 	blenderFilePath = None
+	isFileUrl = None
 	outputPath = None
 	blenderVersion = None
+	isBlenderUrl = None
 	fileFormat = None
 	renderEngine = None
 	startFrame = None
@@ -16,13 +18,16 @@ class Blender:
 	animation = None
 	audio = None
 	logEnable = None
+	blenderInstallPath = None
 
-	def __init__(self, blenderFilePath, outputPath, blenderVersion, fileFormat, renderEngine, startFrame, endFrame, 
-				renderer, animation, audio, logEnable, token):
+	def __init__(self, blenderFilePath, isFileUrl, outputPath, blenderVersion, isBlenderUrl, fileFormat, 
+				renderEngine, startFrame, endFrame, renderer, animation, audio, logEnable, token):
 		self.token = token
 		self.blenderFilePath = blenderFilePath
+		self.isFileUrl = isFileUrl
 		self.outputPath = outputPath
 		self.blenderVersion = blenderVersion
+		self.isBlenderUrl = isBlenderUrl
 		self.fileFormat = fileFormat
 		self.renderEngine = renderEngine
 		self.startFrame = startFrame
@@ -43,52 +48,67 @@ class Blender:
 			self.renderer = "OPTIX"
 
 	def setup(self):
-		#tokenhandler.TokenHandler.decode_token(self.token)
-		#Blender.set_renderer(self)	
+		tokenhandler.TokenHandler.validate(self.token)
+		#Blender.set_renderer(self)
+		resources.print_resources()
 		Blender.gpu_setup()
 		ldpreload.preload()
-		setupblender.setup(self.blenderVersion)
+		self.blenderInstallPath = setupblender.setup(self.blenderVersion, self.isBlenderUrl)
+		if (self.isFileUrl == True):
+			self.blenderFilePath = filedownload.download_from_url(self.blenderFilePath)
 		#setupblender.enable_rendering(self.gpuEnabled, self.cpuEnabled)
 		print("Setup completed")
 
 	def render(self):
 		print("starting to process blender...")
-		blender_binary = './'+self.blenderVersion+"/blender"
-		audioAvailable = ""
-		if (self.audio == False):
-			audioAvailable = "-noaudio"
+		blender_binary = './'+self.blenderInstallPath+"/blender"
 		if (self.animation):
 			if self.startFrame == self.endFrame:	
-				args = ["sudo", blender_binary, 
+				args = [blender_binary, 
 						"-b", self.blenderFilePath,
-						audioAvailable,"-E", self.renderEngine,
-						"--log-level","1",
+						"-E", self.renderEngine,
 						"-o", self.outputPath,
-						"-a", self.fileFormat, "--", "--cycles-device", self.renderer
+						"-F", self.fileFormat,
+						"-a", "--", "--cycles-device", self.renderer
 					]
 			else:
-				args = ["sudo", blender_binary, 
+				args = [blender_binary, 
 						"-b", self.blenderFilePath,
-						audioAvailable,"-E", self.renderEngine,
-						"--log-level","1",
+						"-E", self.renderEngine,
 						"-o", self.outputPath, 
 						"-s", str(self.startFrame),
 						"-e", str(self.endFrame),
-						"-a", self.fileFormat, "--", "--cycles-device", self.renderer
+						"-F", self.fileFormat,
+						"-a", "--", "--cycles-device", self.renderer
 					]
 		else:
-			args = ["sudo", blender_binary, 
+			args = [blender_binary, 
 						"-b", self.blenderFilePath,
-						audioAvailable,"-E", self.renderEngine,
-						"--log-level","1",
+						"-E", self.renderEngine,
 						"-o", self.outputPath,
+						"-F", self.fileFormat,
 						"-f", str(self.startFrame),
-						self.fileFormat, "--", "--cycles-device", self.renderer
-					]	
+						"--", "--cycles-device", self.renderer
+					]
+
+		if (self.audio == False):
+			args.insert(3, "-noaudio")
+			if(self.logEnable == True):
+				args.insert(6, "--log-level")
+				args.insert(7, "1")
+		else:
+			if(self.logEnable == True):
+				args.insert(5, "--log-level")
+				args.insert(6, "1")
+
 
 		try:
 			print(' '.join(args))
 			process = subprocess.Popen(args, stdout=subprocess.PIPE)
+			while process.poll() is None:
+				l = process.stdout.readline()
+				if(self.logEnable == True):
+					print(l)
 			print(process.stdout.read())
 			print("Blender Completed...............................................")
 		except subprocess.CalledProcessError as e:
